@@ -5,19 +5,20 @@ import { fetchQuestions } from "./API";
 import { Category, QuestionState } from "./API";
 // Components
 import QuizCard from "./components/QuizCard";
-import { totalmem } from "os";
 
 // Redux
 // import { Provider } from "react-redux";
 // import store from "./redux/store";
 
 const TOTAL_QUESTIONS = 10;
-type AnswerObject = {
+
+export type AnswerObject = {
   question: string;
   answer: string;
   correct: boolean;
   correctAnswer: string;
 };
+
 const App = () => {
   const [loading, setLoading] = useState(false);
   const [questions, setQuestion] = useState<QuestionState[]>([]);
@@ -45,9 +46,35 @@ const App = () => {
     setLoading(false);
   };
 
-  const checkSelectedAnswer = (e: React.MouseEvent) => {};
+  const checkSelectedAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!quizOver) {
+      // Get users answer
+      const answer = e.currentTarget.value;
+      // Check if answer is correct
+      const correct = questions[number].correct_answer === answer;
+      // If correct update score
+      if (correct) setScore((prev) => prev + 1);
+      // Save answer
+      const answerObject = {
+        question: questions[number].question,
+        answer,
+        correct,
+        correctAnswer: questions[number].correct_answer,
+      };
+      setChosenAnswers((prev) => [...prev, answerObject]);
+    }
+  };
 
-  const nextQuestion = () => {};
+  const nextQuestion = () => {
+    // Go to next question
+    const nextQuestion = number + 1;
+
+    if (nextQuestion === TOTAL_QUESTIONS) {
+      setQuizOver(true);
+    } else {
+      setNumber(nextQuestion);
+    }
+  };
   return (
     <div className="App">
       <h1>My React Quiz</h1>
@@ -73,7 +100,7 @@ const App = () => {
       {!quizOver &&
         !loading &&
         chosenAnswers.length === number + 1 &&
-        number === TOTAL_QUESTIONS - 1 && (
+        number !== TOTAL_QUESTIONS - 1 && (
           <button className="next" onClick={nextQuestion}>
             Next
           </button>
