@@ -24,7 +24,7 @@ const QuizCard: React.FC<Props> = ({
     <div>
       {answers.map((answer) => (
         <div key={answer}>
-          <button disabled={chosenAnswer} onClick={callback}>
+          <button value={answer} disabled={chosenAnswer} onClick={callback}>
             <span dangerouslySetInnerHTML={{ __html: answer }} />
           </button>
         </div>
