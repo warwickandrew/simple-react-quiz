@@ -5,19 +5,48 @@ import { fetchQuestions } from "./API";
 import { Category, QuestionState } from "./API";
 // Components
 import QuizCard from "./components/QuizCard";
-import { totalmem } from "os";
+// Styling
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 // Redux
 // import { Provider } from "react-redux";
 // import store from "./redux/store";
 
+const useStyles = makeStyles({
+  title: {
+    fontSize: 24,
+    textAlign: "center",
+    marginTop: 20,
+  },
+  beginButton: {
+    textAlign: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
+    display: "block",
+  },
+  score: {
+    position: "relative",
+    left: "25%",
+  },
+  next: {
+    marginLeft: "auto",
+    marginRight: "auto",
+    display: "block",
+    marginTop: 20,
+  },
+});
+
 const TOTAL_QUESTIONS = 10;
-type AnswerObject = {
+
+export type AnswerObject = {
   question: string;
   answer: string;
   correct: boolean;
   correctAnswer: string;
 };
+
 const App = () => {
   const [loading, setLoading] = useState(false);
   const [questions, setQuestion] = useState<QuestionState[]>([]);
@@ -25,6 +54,7 @@ const App = () => {
   const [chosenAnswers, setChosenAnswers] = useState<AnswerObject[]>([]);
   const [score, setScore] = useState(0);
   const [quizOver, setQuizOver] = useState(true);
+  const classes = useStyles();
 
   console.log(questions);
 
@@ -45,20 +75,55 @@ const App = () => {
     setLoading(false);
   };
 
-  const checkSelectedAnswer = (e: React.MouseEvent) => {};
+  const checkSelectedAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!quizOver) {
+      // Get users answer
+      const answer = e.currentTarget.value;
+      // Check if answer is correct
+      const correct = questions[number].correct_answer === answer;
+      // If correct update score
+      if (correct) setScore((prev) => prev + 1);
+      // Save answer
+      const answerObject = {
+        question: questions[number].question,
+        answer,
+        correct,
+        correctAnswer: questions[number].correct_answer,
+      };
+      setChosenAnswers((prev) => [...prev, answerObject]);
+    }
+  };
 
-  const nextQuestion = () => {};
+  const nextQuestion = () => {
+    // Go to next question
+    const nextQuestion = number + 1;
+
+    if (nextQuestion === TOTAL_QUESTIONS) {
+      setQuizOver(true);
+    } else {
+      setNumber(nextQuestion);
+    }
+  };
   return (
     <div className="App">
-      <h1>My React Quiz</h1>
+      <Typography className={classes.title}>
+        The Ultimate Sports Quiz
+      </Typography>
 
       {quizOver || chosenAnswers.length === TOTAL_QUESTIONS ? (
-        <button className="start" onClick={startQuiz}>
+        <Button
+          color="primary"
+          variant="contained"
+          className={classes.beginButton}
+          onClick={startQuiz}
+        >
           Begin
-        </button>
+        </Button>
       ) : null}
 
-      {!quizOver && <p className="users-score">Score:</p>}
+      {!quizOver && (
+        <Typography className={classes.score}>Score:{score}</Typography>
+      )}
       {loading && <p>Loading...</p>}
       {!loading && !quizOver && (
         <QuizCard
@@ -73,10 +138,14 @@ const App = () => {
       {!quizOver &&
         !loading &&
         chosenAnswers.length === number + 1 &&
-        number === TOTAL_QUESTIONS - 1 && (
-          <button className="next" onClick={nextQuestion}>
+        number !== TOTAL_QUESTIONS - 1 && (
+          <Button
+            variant="contained"
+            className={classes.next}
+            onClick={nextQuestion}
+          >
             Next
-          </button>
+          </Button>
         )}
     </div>
   );
