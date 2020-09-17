@@ -25,6 +25,15 @@ const useStyles = makeStyles({
     marginLeft: "auto",
     marginRight: "auto",
     display: "block",
+    background: "transparent",
+    color: "#00caa6",
+    boxShadow: "none",
+    width: 200,
+    border: "1px solid #00caa6",
+    "&:hover": {
+      backgroundColor: "#39dec1",
+      color: "#fff",
+    },
   },
   score: {
     position: "relative",
