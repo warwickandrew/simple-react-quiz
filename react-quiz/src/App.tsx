@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { fetchQuestions } from "./API";
-
 // Types
 import { Category, QuestionState } from "./API";
 // Components
@@ -9,10 +8,6 @@ import QuizCard from "./components/QuizCard";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-
-// Redux
-// import { Provider } from "react-redux";
-// import store from "./redux/store";
 
 const useStyles = makeStyles({
   title: {
@@ -29,6 +24,10 @@ const useStyles = makeStyles({
   score: {
     position: "relative",
     left: "25%",
+  },
+  loading: {
+    position: "relative",
+    left: "50%",
   },
   next: {
     marginLeft: "auto",
@@ -56,18 +55,17 @@ const App = () => {
   const [quizOver, setQuizOver] = useState(true);
   const classes = useStyles();
 
-  console.log(questions);
-
   const startQuiz = async () => {
     setLoading(true);
     setQuizOver(false);
 
+    // Fetch data from api
     const newQuestions = await fetchQuestions(
       TOTAL_QUESTIONS,
       Category.DEFAULT
     );
 
-    // ToDO add error handling try/catch on setQuestion
+    // Update state to begin quiz
     setQuestion(newQuestions);
     setScore(0);
     setChosenAnswers([]);
@@ -124,7 +122,7 @@ const App = () => {
       {!quizOver && (
         <Typography className={classes.score}>Score:{score}</Typography>
       )}
-      {loading && <p>Loading...</p>}
+      {loading && <p className={`${classes.loading} loading`}>Loading...</p>}
       {!loading && !quizOver && (
         <QuizCard
           questionNumber={number + 1}

@@ -8,8 +8,6 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import CreateOutlinedIcon from "@material-ui/icons/Create";
-import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles({
   root: {
@@ -80,20 +78,12 @@ const QuizCard: React.FC<Props> = ({
                 disabled={chosenAnswer ? true : false}
                 onClick={callback}
                 size="small"
-                className={classes.answerButtons}
+                className={`${classes.answerButtons} answer`}
               >
                 <span dangerouslySetInnerHTML={{ __html: answer }} />
               </Button>
             </div>
           ))}
-          <div>
-            <Button>
-              <CreateOutlinedIcon />
-            </Button>
-            <Button>
-              <DeleteIcon />
-            </Button>
-          </div>
         </CardActions>
       </CardContent>
     </Card>
