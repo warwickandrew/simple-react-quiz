@@ -120,7 +120,9 @@ const App = () => {
       ) : null}
 
       {!quizOver && (
-        <Typography className={classes.score}>Score:{score}</Typography>
+        <Typography className={`${classes.score} user-score`}>
+          Score:{score}
+        </Typography>
       )}
       {loading && <p className={`${classes.loading} loading`}>Loading...</p>}
       {!loading && !quizOver && (
@@ -139,7 +141,7 @@ const App = () => {
         number !== TOTAL_QUESTIONS - 1 && (
           <Button
             variant="contained"
-            className={classes.next}
+            className={`${classes.next} next-btn`}
             onClick={nextQuestion}
           >
             Next

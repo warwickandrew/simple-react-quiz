@@ -64,10 +64,11 @@ const QuizCard: React.FC<Props> = ({
           color="textSecondary"
           gutterBottom
         >
-          Question: {questionNumber} / {totalQuestions}
+          Question: <span className="question-number">{questionNumber}</span> /{" "}
+          <span className="total-questions">{totalQuestions}</span>
         </Typography>
         <Typography
-          className={classes.question}
+          className={`${classes.question} question`}
           dangerouslySetInnerHTML={{ __html: question }}
         />
         <CardActions className={classes.buttonContainer}>
