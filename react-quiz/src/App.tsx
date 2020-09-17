@@ -11,9 +11,14 @@ import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles({
   title: {
-    fontSize: 24,
     textAlign: "center",
-    marginTop: 20,
+    letterSpacing: 4,
+    margin: "1em 0 0.5em 0",
+    fontWeight: 100,
+    textTransform: "uppercase",
+    color: "#00caa6",
+    fontStyle: "italic",
+    fontSize: 40,
   },
   beginButton: {
     textAlign: "center",
